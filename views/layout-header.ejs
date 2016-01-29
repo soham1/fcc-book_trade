@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="/public/img/favicon.ico">
-    <title>Votify</title>
+    <title>Book Merchant</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
@@ -32,12 +32,15 @@
 
 <body>
   <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Votify</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Book Merchant</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="/">Home</a></li>
           <%if(user){%>
             <li>
-              <a href="/polls">My Polls</a>
+              <a href="/myBooks">My Books</a>
+            </li>
+            <li>
+              <a href="/allBooks">All Books</a>
             </li>  
             <li>
               <div class="yellow chip">
@@ -45,6 +48,9 @@
                 <%=user.github.username%>
               </div>
             </li>
+            <li>
+              <a href="/settings">Settings</a>
+            </li>  
             <li>
               <a href="/logout">Logout</a>
             </li>

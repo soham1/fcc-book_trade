@@ -20,11 +20,7 @@ module.exports = function(app, passport) {
 
 	app.route('/')
 		.get(function(req, res) {
-			if(req.user){
-				res.redirect('/dashboard');
-			}else{
-				res.render('index', {user: req.user});
-			}
+			res.render('index', {user: req.user});
 		});
 
 	app.route('/logout')
@@ -37,6 +33,21 @@ module.exports = function(app, passport) {
 		.get(isLoggedIn, function(req, res) {
 			res.render('dashboard', {user: req.user});
 		});
+		
+	app.route('/myBooks')
+		.get(isLoggedIn, function(req, res) {
+			res.render('myBooks', {user: req.user});
+		});	
+	
+	app.route('/allBooks')
+		.get(isLoggedIn, function(req, res) {
+			res.render('allBooks', {user: req.user});
+		});	
+		
+	app.route('/settings')
+		.get(isLoggedIn, function(req, res) {
+			res.render('settings', {user: req.user});
+		});	
 
 	app.route('/addPoll')
 		.post(isLoggedIn, function(req, res) {
@@ -147,7 +158,7 @@ app.route('/auth/github')
 
 app.route('/auth/github/callback')
 	.get(passport.authenticate('github', {
-		successRedirect: '/dashboard',
+		successRedirect: '/myBooks',
 		failureRedirect: '/'
 	}));
 
@@ -156,3 +167,4 @@ app.route('/api/:id/clicks')
 	.post(isLoggedIn, clickHandler.addClick)
 	.delete(isLoggedIn, clickHandler.resetClicks);
 };
+
