@@ -1,4 +1,23 @@
 <% include layout-header %>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <h2 class="header">All Books</h2>
+    <ul>
+        <% for(var i=0; i < books.length; i++) {%>
+            <%if(books[i].requestedBy) {%>
+                <%if(books[i].requestedBy.equals(user._id)) {%>
+                    <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                        <a href="/cancelRequest/<%=books[i]._id%>" class="waves-effect waves-light btn">Requested!</a>
+                    </li>
+                <%}else{%>
+                    <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                        <a class="disabled waves-effect waves-light btn">Someone Requested</a>
+                    </li>
+                <%}%>    
+            <%}else{%>
+                <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                    <a href="/request/<%=books[i]._id%>" class="waves-effect waves-light btn">I want this book!</a>
+                </li>
+            <%}%>
+        <%}%>    
+    </ul>
 <% include layout-footer %>

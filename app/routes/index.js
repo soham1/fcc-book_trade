@@ -48,6 +48,7 @@ module.exports = function(app, passport) {
 					res.render('err');
 				}
 				else {
+					console.log("Passing books to ejs", books.length);
 					res.render('myBooks', {
 						user: req.user,
 						books: books
@@ -76,9 +77,22 @@ module.exports = function(app, passport) {
 
 	app.route('/allBooks')
 		.get(isLoggedIn, function(req, res) {
-			res.render('allBooks', {
-				user: req.user
-			});
+			Book.find({
+				userId: {
+					"$ne": req.user._id
+				}
+			}, function(err, books) {
+				if (err) {
+					res.render('err');
+				}
+				else {
+					console.log("Passing books to ejs", books.length);
+					res.render('allBooks', {
+						user: req.user,
+						books: books
+					});
+				}
+			})
 		});
 
 	app.route('/settings')
@@ -101,6 +115,84 @@ module.exports = function(app, passport) {
 			successRedirect: '/myBooks',
 			failureRedirect: '/'
 		}));
+
+	app.route('/deleteBook/:id')
+		.get(isLoggedIn, function(req, res) {
+			Book.findByIdAndRemove(req.params.id, function(err) {
+				if (err) {
+					res.redirect('/myBooks');
+				}
+				else {
+					res.redirect('/myBooks');
+				}
+			});
+		});
+
+	app.route('/request/:id')
+		.get(isLoggedIn, function(req, res) {
+			Book.findByIdAndUpdate(req.params.id, {
+				requestedBy: req.user._id
+			}, function(err) {
+				if (err) {
+					res.redirect('/allBooks');
+				}
+				else {
+					res.redirect('/allBooks');
+				}
+			});
+		});
+
+	app.route('/cancelRequest/:id')
+		.get(isLoggedIn, function(req, res) {
+			Book.findByIdAndUpdate(req.params.id, {
+				requestedBy: null
+			}, function(err) {
+				if (err) {
+					console.log("Error while canceling request for", req.params.id);
+					res.redirect('/allBooks');
+				}
+				else {
+					res.redirect('/allBooks');
+				}
+			});
+		});
+
+	app.route('/accept/:id')
+		.get(isLoggedIn, function(req, res) {
+			Book.findById(req.params.id, function(err, book) {
+				if (err) {
+					console.log("Error while accepting request for", req.user_id);
+					res.redirect('/myBooks');
+				}
+				else {
+					book.userId = book.requestedBy;
+					book.requestedBy = null;
+					book.save(function(err) {
+						if (err) {
+							console.log("Error in changing owner");
+						}
+						else {
+							res.redirect('/myBooks');
+						}
+					});
+				}
+			});
+		});
+
+	app.route('/reject/:id')
+		.get(isLoggedIn, function(req, res) {
+			Book.findByIdAndUpdate(req.params.id, {
+				requestedBy: null
+			}, function(err) {
+				if (err) {
+					res.redirect('/myBooks');
+				}
+				else {
+					res.redirect('/myBooks');
+				}
+			});
+		});
+
 
 	app.route('/api/:id/clicks')
 		.get(isLoggedIn, clickHandler.getClicks)

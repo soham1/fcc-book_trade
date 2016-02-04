@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var Book = new Schema({
    userId: {type: Schema.Types.ObjectId, ref: 'User'},
    bookName: String,
-   posterUrl: String
+   posterUrl: String,
+   requestedBy: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 
 module.exports = mongoose.model('Book', Book);

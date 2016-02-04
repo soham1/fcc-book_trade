@@ -20,9 +20,16 @@
     </div>
     <div>
         <ul>
-            <% for(var i = 0; i < books.length; i++) {%>
-                <li><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>"></li>
-            <%}%>
+            <% for(var i=0 ; i < books.length; i++) {%>
+                <li id="<%=books[i]._id%>">
+                    <img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                    <a href="/deleteBook/<%=books[i]._id%>" class="waves-effect waves-light btn">Delete</a>
+                    <%if(books[i].requestedBy){%>
+                        <a href="/accept/<%=books[i]._id%>" class="waves-effect waves-light btn">Accept</a>
+                        <a href="/reject/<%=books[i]._id%>" class="waves-effect waves-light btn">Reject</a>
+                    <%}%>
+                </li>
+                <%}%>
         </ul>
-    </div>    
-<% include layout-footer %>
+    </div>
+    <% include layout-footer %>
