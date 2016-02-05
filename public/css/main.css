@@ -27,3 +27,30 @@
 #url {
     width: 700px !important;
 }
+
+.book {
+    width: 200px;
+}
+
+.bookImg {
+    height: 300px;
+    overflow: hidden;
+}
+
+#bookContainer {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#bookContainer li {
+    display: inline-block;
+}
+
+.descriptions {
+    font-size: 20px;
+}
+
+#filler{
+    height: 100px;
+}

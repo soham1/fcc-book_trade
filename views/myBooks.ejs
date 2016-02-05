@@ -4,32 +4,63 @@
     <div class="row">
         <form id="addBook" method="POST" action="addBook">
             <div class="row">
-                <div class="input-field col s4">
+                <div class="input-field col s3">
                     <input id="bookName" name="bookName" type="text" class="validate">
                     <label for="bookName">Add Book</label>
                 </div>
-                <div class="input-field col s4">
+                <div class="input-field col s3">
+                    <input id="bookAuthor" name="bookAuthor" type="text" class="validate">
+                    <label for="bookAuthor">Author</label>
+                </div>
+                <div class="input-field col s3">
                     <input id="posterUrl" name="posterUrl" type="text" class="validate">
                     <label for="posterUrl">Cover Url</label>
                 </div>
-                <div class="input-field col s4">
+                <div class="input-field col s3">
                     <a onclick="document.getElementById('addBook').submit();" class="waves-effect waves-light btn">Add</a>
                 </div>
             </div>
         </form>
     </div>
     <div>
-        <ul>
+        <ul id="bookContainer">
             <% for(var i=0 ; i < books.length; i++) {%>
-                <li id="<%=books[i]._id%>">
-                    <img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
-                    <a href="/deleteBook/<%=books[i]._id%>" class="waves-effect waves-light btn">Delete</a>
-                    <%if(books[i].requestedBy){%>
-                        <a href="/accept/<%=books[i]._id%>" class="waves-effect waves-light btn">Accept</a>
-                        <a href="/reject/<%=books[i]._id%>" class="waves-effect waves-light btn">Reject</a>
-                    <%}%>
+                <li>
+                    <div id="<%=books[i]._id%>" class="book card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator bookImg" src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i></span>
+                            <p>
+                                <% if(books[i].bookName.length > 15){%>
+                                    <%=books[i].bookName.substring(0, 15)%>...
+                                <%}else{%>
+                                    <%=books[i].bookName%>
+                                <%}%>
+                            </p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">
+                                <i class="material-icons right">close</i>
+                                <p class="descriptions"><%=books[i].bookName%></p>
+                                <p class="descriptions">By <%=books[i].bookAuthor%></p>
+                            </span>
+                            <p>
+                                <a href="/deleteBook/<%=books[i]._id%>" class="waves-effect waves-light btn #f44336 red">Delete</a>
+                            </p>    
+                                <%if(books[i].requestedBy){%>
+                                    <p>
+                                        <a href="/accept/<%=books[i]._id%>" class="waves-effect waves-light btn #4caf50 green">Accept</a>
+                                    </p>
+                                    <p>
+                                        <a href="/reject/<%=books[i]._id%>" class="waves-effect waves-light btn #ff9800 orange">Reject</a>
+                                    </p>                                
+                                <%}%>
+                        </div>
+                    </div>
                 </li>
-                <%}%>
+            <%}%>
         </ul>
     </div>
-    <% include layout-footer %>
+<% include layout-footer %>

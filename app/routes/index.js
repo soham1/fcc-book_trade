@@ -3,6 +3,7 @@
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 var Book = require("../models/books.js");
+var User = require("../models/users.js")
 var Offer = require("../models/offers.js");
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -65,6 +66,7 @@ module.exports = function(app, passport) {
 			book.userId = req.user._id;
 			book.bookName = req.body.bookName;
 			book.posterUrl = req.body.posterUrl;
+			book.bookAuthor = req.body.bookAuthor;
 			book.save(function(err) {
 				if (err) {
 					res.render('error');
@@ -99,6 +101,24 @@ module.exports = function(app, passport) {
 		.get(isLoggedIn, function(req, res) {
 			res.render('settings', {
 				user: req.user
+			});
+	});
+	
+	app.route('/settings')
+		.post(isLoggedIn, function(req, res) {
+			console.log("Saving data", req.body);
+			User.findByIdAndUpdate(req.user._id, {
+				fullName: req.body.fullName,
+				city: req.body.city,
+				state: req.body.state
+			}, function(err) {
+				if (err) {
+					console.log("Error in settings");
+				}
+				else {
+					console.log("Settings saved");
+					res.redirect('settings');
+				}
 			});
 		});
 

@@ -1,23 +1,43 @@
 <% include layout-header %>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <h2 class="header">All Books</h2>
-    <ul>
+    <ul id="bookContainer">
         <% for(var i=0; i < books.length; i++) {%>
-            <%if(books[i].requestedBy) {%>
-                <%if(books[i].requestedBy.equals(user._id)) {%>
-                    <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
-                        <a href="/cancelRequest/<%=books[i]._id%>" class="waves-effect waves-light btn">Requested!</a>
-                    </li>
-                <%}else{%>
-                    <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
-                        <a class="disabled waves-effect waves-light btn">Someone Requested</a>
-                    </li>
-                <%}%>    
-            <%}else{%>
-                <li id="<%=books[i]._id%>"><img src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
-                    <a href="/request/<%=books[i]._id%>" class="waves-effect waves-light btn">I want this book!</a>
-                </li>
-            <%}%>
-        <%}%>    
+            <li>
+            <div class="book card">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator bookImg" src="<%=books[i].posterUrl%>" alt="<%=books[i].bookName%>">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4"><i class="material-icons right">more_vert</i></span>
+                    <p>
+                        <% if(books[i].bookName.length > 15){%>
+                            <%=books[i].bookName.substring(0, 15)%>...
+                        <%}else{%>
+                            <%=books[i].bookName%>
+                        <%}%>
+                    </p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">
+                        <i class="material-icons right">close</i>
+                        <%=books[i].bookName%>
+                        <p>By <%=books[i].bookAuthor%></p>
+                    </span>
+                    <p>
+                        <%if(books[i].requestedBy) {%>
+                            <%if(books[i].requestedBy.equals(user._id)) {%>
+                                    <a href="/cancelRequest/<%=books[i]._id%>" class="waves-effect waves-light btn #3f51b5 indigo">Requested!</a>
+                                <%}else{%>
+                                        <a class="disabled waves-effect waves-light btn">Someone Requested</a>
+                                <%}%>
+                        <%}else{%>
+                                <a href="/request/<%=books[i]._id%>" class="waves-effect waves-light btn #03a9f4 blue">I want this book!</a>
+                        <%}%>
+                    </p>
+                </div>
+            </div>
+            </li>
+        <%}%>
     </ul>
-<% include layout-footer %>
+    <% include layout-footer %>
